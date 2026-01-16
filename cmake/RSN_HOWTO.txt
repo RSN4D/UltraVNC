@@ -1,0 +1,84 @@
+RSN_HOWTO.txt - Basic Usage Instructions for UltraVNC
+=====================================================
+
+BUILDING
+--------
+From the cmake directory, with vcpkg configured:
+
+    cd build
+    cmake ..
+    cmake --build . --config RelWithDebInfo
+
+Built files are in: build/<component>/RelWithDebInfo/
+
+
+VIEWER (vncviewer.exe)
+----------------------
+Use the viewer to connect to a VNC server.
+
+Required files (copy to same folder):
+    vncviewer.exe
+    jpeg62.dll
+    liblzma.dll
+    zlib1.dll
+    zstd.dll
+
+Location after build:
+    build/vncviewer/RelWithDebInfo/
+
+Usage:
+    vncviewer.exe                     # Opens connection dialog
+    vncviewer.exe 192.168.1.100       # Connect to server IP
+    vncviewer.exe 192.168.1.100:5901  # Connect to specific port
+
+
+SERVER (winvnc.exe)
+-------------------
+Run the server on the machine you want to control remotely.
+
+Required files (copy to same folder):
+    winvnc.exe
+    vnchooks.dll      (from build/vnchooks/RelWithDebInfo/)
+    jpeg62.dll
+    liblzma.dll
+    libsodium.dll
+    zlib1.dll
+    zstd.dll
+
+Location after build:
+    build/winvnc/RelWithDebInfo/   (exe + DLLs except vnchooks.dll)
+    build/vnchooks/RelWithDebInfo/ (vnchooks.dll)
+
+Usage:
+    winvnc.exe              # Run server with system tray icon
+    winvnc.exe -settings    # Open settings dialog
+    winvnc.exe -help        # Show command line options
+
+
+DEFAULT PORTS
+-------------
+    5900    VNC server listens for viewer connections
+    5800    HTTP server for Java viewer (if enabled)
+
+
+QUICK START - LAN CONNECTION
+----------------------------
+1. On the SERVER machine:
+   - Copy all server files to a folder
+   - Run winvnc.exe
+   - Right-click tray icon > Properties to set password
+   - Note the machine's IP address (ipconfig)
+
+2. On the CLIENT machine:
+   - Copy all viewer files to a folder
+   - Run vncviewer.exe
+   - Enter server IP address
+   - Enter password when prompted
+
+
+NOTES
+-----
+- Server requires administrator privileges for full functionality
+- vnchooks.dll must be in same folder as winvnc.exe for efficient capture
+- Firewall must allow port 5900 (or custom port) for incoming connections
+- Cloud/relay feature is not included in this build (see RSN_IMPORTANT.txt)
