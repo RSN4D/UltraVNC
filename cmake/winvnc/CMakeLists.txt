@@ -26,21 +26,27 @@ set(${PROJECT_NAME}_SOURCES
     ../../common/UltraVncZ.cpp
     ../../common/d3des.c
     ../../common/win32_helpers.cpp
+    ../../common/inifile.cpp
     ../../lzo/minilzo.c
     ../../rfb/dh.cpp
     CloudDialog.cpp
     CpuUsage.cpp
     DeskdupEngine.cpp
+    DlgChangePassword.cpp
     Dtwinver.cpp
     HelperFunctions.cpp
     HideDesktop.cpp
     IPC.cpp
     LayeredWindows.cpp
     MouseSimulator.cpp
-	PropertiesDialog.cpp
+    PropertiesDialog.cpp
+    RulesListView.cpp
+    ScSelect.cpp
     ScreenCapture.cpp
+    service.cpp
     SettingsManager.cpp
     TextChat.cpp
+    Timer.cpp
     UdpEchoServer.cpp
     UltraVNCService.cpp
     VirtualDisplay.cpp
@@ -49,12 +55,13 @@ set(${PROJECT_NAME}_SOURCES
     cadthread.cpp
     credentials.cpp
     getinfo.cpp
-    inifile.cpp
-    initipp.cpp
     rfbRegion_X11.cxx
     rfbRegion_win32.cpp
     rfbUpdateTracker.cpp
     stdhdrs.cpp
+    # tableinitcmtemplate.cpp  # Template file - included, not compiled
+    # tableinittctemplate.cpp  # Template file - included, not compiled
+    # tabletranstemplate.cpp   # Template file - included, not compiled
     translate.cpp
     uvncUiAccess.cpp
     videodriver.cpp
@@ -68,6 +75,7 @@ set(${PROJECT_NAME}_SOURCES
     vncEncodeZlib.cpp
     vncEncodeZlibHex.cpp
     vncListDlg.cpp
+    # vnclogon.cpp  # Has compile errors - references non-existent vncDesktop::logon
     vncMultiMonitor.cpp
     vncOSVersion.cpp
     vncabout.cpp
@@ -118,7 +126,7 @@ target_link_libraries(${PROJECT_NAME}
 	PRIVATE unofficial-sodium::sodium
     libomnithread
     librdr
-    libudtcloud
+    # libudtcloud  # Source code not available in public repository
     libzip32
     libzipunzip
     comctl32

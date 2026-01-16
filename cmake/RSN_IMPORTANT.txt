@@ -1,0 +1,73 @@
+RSN_IMPORTANT.txt - Cloud/UDT Feature Intentionally Disabled
+=============================================================
+
+Date: 2026-01-15
+
+SUMMARY
+-------
+The cloud/UDT functionality (libudt4, libudtcloud) is intentionally disabled
+in this CMake build. The winvnc server builds and works fully for direct
+LAN connections without this feature.
+
+
+REASON: SOURCE CODE NOT AVAILABLE
+---------------------------------
+The UDT (UDP-based Data Transfer) libraries required for cloud functionality
+are NOT included in the public UltraVNC repository:
+
+  - udt4/          - Directory does not exist (cmake expects ../udt4/src/)
+  - UdtCloudlib/   - Directory does not exist (cmake expects ../UdtCloudlib/proxy/)
+
+Investigation showed:
+  - Only empty CMakeLists.txt stubs exist in some branches
+  - The actual source code was never committed to the public repository
+  - This appears to be proprietary code or hosted separately
+
+
+WHAT IS THE CLOUD FEATURE?
+--------------------------
+The cloud/UDT feature allows VNC connections through UltraVNC's cloud relay
+service, enabling connections without port forwarding or when both parties
+are behind NAT. This is NOT needed for:
+
+  - Direct LAN connections
+  - Connections where the server has a reachable IP/port
+
+
+HOW IT'S DISABLED
+-----------------
+1. libudt4 and libudtcloud are commented out in CMakeLists.txt
+2. winvnc/CMakeLists.txt has libudtcloud dependency commented out
+3. The cloud code in winvnc is guarded by #ifdef _CLOUD preprocessor directives
+4. Since _CLOUD is not defined, cloud code paths are excluded at compile time
+
+
+FILES MODIFIED
+--------------
+- cmake/CMakeLists.txt         - libudt4/libudtcloud commented out
+- cmake/winvnc/CMakeLists.txt  - Updated source file list, libudtcloud removed
+
+
+ADDITIONAL FIXES APPLIED TO winvnc/CMakeLists.txt
+-------------------------------------------------
+The original CMakeLists.txt was out of sync with actual source files:
+
+Removed (don't exist):
+  - inifile.cpp (local) - replaced with ../../common/inifile.cpp
+  - initipp.cpp
+
+Removed (template files with #error "shouldn't be compiled"):
+  - tableinitcmtemplate.cpp
+  - tableinittctemplate.cpp
+  - tabletranstemplate.cpp
+
+Removed (compile errors - references non-existent vncDesktop::logon):
+  - vnclogon.cpp
+
+Added (exist on disk but were missing):
+  - DlgChangePassword.cpp
+  - RulesListView.cpp
+  - ScSelect.cpp
+  - service.cpp
+  - Timer.cpp
+  - ../../common/inifile.cpp

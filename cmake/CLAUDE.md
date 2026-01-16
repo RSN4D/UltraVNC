@@ -72,7 +72,7 @@ msbuild /p:Platform=x64 /p:Configuration=Release vncviewer\vncviewer.sln
 | Component | Type | Description |
 |-----------|------|-------------|
 | **vncviewer** | Executable | UltraVNC Viewer (RFB client) |
-| **winvnc** | Executable | UltraVNC Server (currently commented out in main CMakeLists.txt) |
+| **winvnc** | Executable | UltraVNC Server (without cloud feature - see RSN_IMPORTANT.txt) |
 | **repeater** | Executable | VNC connection relay service |
 
 ### Shared Libraries (DLLs)
@@ -92,7 +92,6 @@ msbuild /p:Platform=x64 /p:Configuration=Release vncviewer\vncviewer.sln
 | **librdr** | RFB data stream I/O (zlib, zstd, LZMA compression) |
 | **libomnithread** | Multi-threading abstraction (Windows NT) |
 | **libzip32/libzipunzip** | ZIP archive handling |
-| **libudt4/libudtcloud** | UDP-based data transfer (commented out) |
 
 ### Utilities
 
@@ -112,7 +111,7 @@ msbuild /p:Platform=x64 /p:Configuration=Release vncviewer\vncviewer.sln
 - `rdr/` - Data stream handling with compression
 - `omnithread/` - Threading library
 - `addon/ms-logon/` - MS-Logon authentication modules
-- `common/` - Shared utilities
+- `common/` - Shared utilities (includes inifile.cpp used by winvnc)
 
 ## Build Configuration
 
@@ -123,6 +122,7 @@ msbuild /p:Platform=x64 /p:Configuration=Release vncviewer\vncviewer.sln
 
 ## Notes
 
-- The `winvnc` subdirectory is currently commented out in CMakeLists.txt
+- **Cloud/UDT feature disabled** - See RSN_IMPORTANT.txt for details
 - SecureVNCPlugin is not publicly available
 - Windows system libraries required: comctl32, gdi32, ws2_32, wtsapi32, etc.
+- winvnc builds without cloud support - fully functional for direct LAN connections
