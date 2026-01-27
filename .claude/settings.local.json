@@ -6,7 +6,10 @@
       "Bash(vcpkg list:*)",
       "Bash(findstr:*)",
       "Bash(vcpkg install:*)",
-      "Bash(dir \"D:\\\\GitHub\\\\UltraVNC\\\\cmake\\\\build\\\\vcpkg_installed\\\\x64-windows-static\\\\lib\"\")"
+      "Bash(dir \"D:\\\\GitHub\\\\UltraVNC\\\\cmake\\\\build\\\\vcpkg_installed\\\\x64-windows-static\\\\lib\"\")",
+      "Bash(wc:*)",
+      "Bash(grep:*)",
+      "WebSearch"
     ]
   }
 }
