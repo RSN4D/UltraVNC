@@ -4,7 +4,9 @@
       "Bash(where:*)",
       "Bash(D:\\\\rsn\\\\vcpkg\\\\vcpkg.exe list:*)",
       "Bash(vcpkg list:*)",
-      "Bash(findstr:*)"
+      "Bash(findstr:*)",
+      "Bash(vcpkg install:*)",
+      "Bash(dir \"D:\\\\GitHub\\\\UltraVNC\\\\cmake\\\\build\\\\vcpkg_installed\\\\x64-windows-static\\\\lib\"\")"
     ]
   }
 }
