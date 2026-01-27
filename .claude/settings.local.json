@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(where:*)",
+      "Bash(D:\\\\rsn\\\\vcpkg\\\\vcpkg.exe list:*)",
+      "Bash(vcpkg list:*)",
+      "Bash(findstr:*)"
+    ]
+  }
+}

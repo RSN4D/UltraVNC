@@ -11,25 +11,34 @@ UltraVNC is a Windows-only remote desktop tool using the RFB (Remote Frame Buffe
 ### Prerequisites
 - Visual Studio 2022 with MFC components
 - NASM (Netwide Assembler): https://nasm.us/
-- vcpkg for dependency management
+- vcpkg at `D:\rsn\vcpkg`
 
 ### Windows Build (CMake + vcpkg)
 
 ```cmd
-# Set up vcpkg (one-time)
-git clone https://github.com/microsoft/vcpkg.git c:\source\vcpkg
-cd c:\source\vcpkg && bootstrap-vcpkg.bat -disableMetrics
-set VCPKG_ROOT=c:\source\vcpkg
-set PATH=%VCPKG_ROOT%;%PATH%
-
-# Install dependencies
-vcpkg install zlib:x64-windows-static zstd:x64-windows-static libjpeg-turbo:x64-windows-static liblzma:x64-windows-static libsodium:x64-windows-static
+set VCPKG_ROOT=D:\rsn\vcpkg
 
 # Build
 mkdir build && cd build
 cmake -DCMAKE_TOOLCHAIN_FILE=%VCPKG_ROOT%\scripts\buildsystems\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static ..\cmake
 cmake --build . --parallel --config=RelWithDebInfo
 ```
+
+### Dependencies (vcpkg)
+
+Required packages (x64-windows-static triplet): zlib, zstd, libjpeg-turbo, liblzma, libsodium
+
+**Check installed packages:**
+```cmd
+vcpkg list | grep -iE "zlib|zstd|libjpeg|liblzma|libsodium"
+```
+
+**Install missing packages:**
+```cmd
+vcpkg install zlib:x64-windows-static zstd:x64-windows-static libjpeg-turbo:x64-windows-static liblzma:x64-windows-static libsodium:x64-windows-static
+```
+
+When adding new external dependencies, first check if they exist in the local vcpkg. If not present, add them using `vcpkg install <package>:x64-windows-static`.
 
 ### Legacy Visual Studio Build (without CMake)
 
@@ -42,11 +51,13 @@ msbuild /p:Platform=x64 /p:Configuration=Release vncviewer\vncviewer.sln
 
 **Ninja + Address Sanitizer:**
 ```cmd
+set VCPKG_ROOT=D:\rsn\vcpkg
 cmake -G Ninja -Dasan=TRUE -DCMAKE_TOOLCHAIN_FILE=%VCPKG_ROOT%\scripts\buildsystems\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static ..\cmake
 ```
 
 **LLVM/Clang:**
 ```cmd
+set VCPKG_ROOT=D:\rsn\vcpkg
 cmake -T ClangCL -DCMAKE_TOOLCHAIN_FILE=%VCPKG_ROOT%\scripts\buildsystems\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static ..\cmake
 ```
 
@@ -96,7 +107,6 @@ Key classes in `winvnc/winvnc/`:
 - **C++ Standard:** C++14
 - **Architectures:** x64 (`_X64` defined) and x86
 - **Output:** `${CMAKE_BINARY_DIR}/ultravnc`
-- **Dependencies:** zlib, zstd, libjpeg-turbo, liblzma, libsodium (via vcpkg)
 
 ## Important Notes
 
