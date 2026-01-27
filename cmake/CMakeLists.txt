@@ -11,6 +11,11 @@
 
 cmake_minimum_required(VERSION 3.10)
 
+# UltraVNC is Windows-only
+if(NOT WIN32)
+  message(FATAL_ERROR "UltraVNC only supports Windows. Cross-compilation is not supported.")
+endif()
+
 if(DEFINED ENV{VCPKG_DEFAULT_TRIPLET})
   message(STATUS "Setting default vcpkg target triplet to $ENV{VCPKG_DEFAULT_TRIPLET}")
   set(VCPKG_TARGET_TRIPLET $ENV{VCPKG_DEFAULT_TRIPLET})
@@ -73,10 +78,6 @@ if(WIN32)
 endif()
 
 set(CMAKE_CXX_STANDARD 14)
-if (MINGW)
-    set(CMAKE_C_FLAGS "-Wno-write-strings")
-    set(CMAKE_CXX_FLAGS "-Wno-write-strings -Wno-conversion-null")
-endif()
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     add_compile_definitions("_CRT_SECURE_NO_WARNINGS")
     add_compile_definitions("_WINSOCK_DEPRECATED_NO_WARNINGS")
@@ -94,11 +95,6 @@ if (asan)
     install(FILES "c:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.40.33807/bin/Hostx64/x64/clang_rt.asan_dynamic-x86_64.dll" DESTINATION ${CMAKE_BINARY_DIR}/ultravnc OPTIONAL)
 endif()
 
-if (MINGW)
-    install(FILES /usr/lib/gcc/x86_64-w64-mingw32/13-win32/libstdc++-6.dll DESTINATION ${CMAKE_BINARY_DIR}/ultravnc OPTIONAL)
-    install(FILES /usr/lib/gcc/x86_64-w64-mingw32/13-win32/libgcc_s_seh-1.dll DESTINATION ${CMAKE_BINARY_DIR}/ultravnc OPTIONAL)
-endif()
-
 add_subdirectory(authadmin)
 add_subdirectory(authSSP)
 add_subdirectory(createpassword)
@@ -107,8 +103,10 @@ add_subdirectory(ldapauth9x)
 add_subdirectory(ldapauthnt4)
 add_subdirectory(libomnithread)
 add_subdirectory(librdr)
-# add_subdirectory(libudt4)      # Source code not in public repository
-# add_subdirectory(libudtcloud)  # Source code not in public repository
+# Cloud/UDT feature - DO NOT ENABLE
+# Source code not in public repository, will not compile
+# add_subdirectory(libudt4)
+# add_subdirectory(libudtcloud)
 add_subdirectory(libzip32)
 add_subdirectory(libzipunzip)
 add_subdirectory(logging)

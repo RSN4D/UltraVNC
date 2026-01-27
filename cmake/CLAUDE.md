@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-UltraVNC is a free remote access tool for Windows providing desktop sharing and control via the RFB (Remote Frame Buffer) protocol. This `cmake/` directory contains the CMake-based build system.
+UltraVNC is a Windows-only remote desktop tool using the RFB (Remote Frame Buffer) protocol. This `cmake/` directory contains the CMake-based build system.
 
 ## Build Commands
 
@@ -47,15 +47,6 @@ cmake --build . --target install --config=RelWithDebInfo
 ```cmd
 cmake -DCMAKE_TOOLCHAIN_FILE=%VCPKG_ROOT%\scripts\buildsystems\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static -T ClangCL ..\UltraVNC\cmake
 cmake --build . --parallel --config=RelWithDebInfo
-```
-
-### Linux Cross-Compilation (MinGW)
-
-```bash
-cmake -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake \
-      -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/toolchains/mingw.cmake \
-      -DCMAKE_SYSTEM_NAME=MinGW -DVCPKG_TARGET_TRIPLET=x64-mingw-static ../UltraVNC/cmake
-cmake --build . -j
 ```
 
 ### Legacy Visual Studio Build (without CMake)
@@ -122,7 +113,7 @@ msbuild /p:Platform=x64 /p:Configuration=Release vncviewer\vncviewer.sln
 
 ## Notes
 
-- **Cloud/UDT feature disabled** - See RSN_IMPORTANT.txt for details
+- **Windows-only:** This project builds and runs only on Windows. Cross-compilation is not supported.
+- **Cloud/UDT feature is non-functional:** The cloud relay source code (libudt4, libudtcloud) is not in this repository. Do not attempt to enable or develop this feature - it will not compile. Code paths are guarded by `_CLOUD` preprocessor define which must remain undefined. See RSN_IMPORTANT.txt for details.
 - SecureVNCPlugin is not publicly available
 - Windows system libraries required: comctl32, gdi32, ws2_32, wtsapi32, etc.
-- winvnc builds without cloud support - fully functional for direct LAN connections
